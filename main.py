@@ -8,9 +8,11 @@ Lastly, we'll see how to put all the info down in a not yet decided file format.
 """
 
 from gui import gui
+from out import out
 
 def main():
-	prog = gui.Gui()
+	back = out.Backend()
+	prog = gui.Gui(back)
 	return 0
 	
 main()

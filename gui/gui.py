@@ -10,7 +10,8 @@ import Tkinter as ttk
 
 
 class Gui:
-	def __init__(self):
+	def __init__(self, back):
+		self.backend = back
 		self.home = ttk.Tk()
 		
 		self.home.geometry('400x200')
