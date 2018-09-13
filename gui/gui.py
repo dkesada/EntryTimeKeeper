@@ -29,11 +29,11 @@ class Gui:
 		self.canvas.destroy()
 		self.canvas = ttk.Frame(self.home)
 		self.canvas.pack()
-		ttk.Button(self.canvas, text='Fichar entrada', command = self.entrada).pack()
-		ttk.Button(self.canvas, text='Fichar salida', command = self.salida).pack()
+		ttk.Button(self.canvas, text='Fichar entrada', command = lambda: self.entrada('Introduzca su código para que su entrada quede registrada')).pack()
+		ttk.Button(self.canvas, text='Fichar salida', command = lambda: self.salida('Introduzca su código para que su salida quede registrada')).pack()
 		ttk.Button(self.canvas, text='Salir', command = self.home.destroy).pack()
 		
-	def entrada(self):
+	def entrada(self, t):
 		self.canvas.pack_forget()
 		self.canvas.destroy()
 		self.canvas = ttk.Frame(self.home)
@@ -44,13 +44,27 @@ class Gui:
 		down = ttk.Frame(self.canvas)
 		down.pack(side=ttk.BOTTOM)
 		
-		ttk.Label(up, text='Introduzca su código para que su entrada quede registrada').pack()
+		ttk.Label(up, text=t).pack()
 		ttk.Label(down, text='Código: ').grid(row=0, column=0)
-		ttk.Entry(down, bd = 5).grid(row=0, column=1)
-		ttk.Button(down, text='Fichar', command = self.entrada).grid(row=1, column=0)
+		entry = ttk.Entry(down, bd = 5)
+		entry.grid(row=0, column=1)
+		ttk.Button(down, text='Fichar', command = lambda: self.processEntry(entry.get())).grid(row=1, column=0)
 		ttk.Button(down, text='Volver', command = self.inicio).grid(row=1, column=1)
-		
-	def salida(self):
+	
+	
+	def processEntry(self, code):
+		"""
+		Takes the code introduced by the user, checks that it is valid and registers the entry
+		"""
+		if self.backend.check(code):
+			if self.backend.entry(code):
+				self.entrada('Su entrada ha quedado registrada, gracias por su tiempo.')
+			else:
+				self.entrada('El código introducido ya ha fichado por hoy.')
+		else:
+			self.entrada('El código introducido no existe. Por favor, introdúzca un código válido.')
+			
+	def salida(self, t):
 		self.canvas.pack_forget()
 		self.canvas.destroy()
 		self.canvas = ttk.Frame(self.home)
@@ -61,9 +75,21 @@ class Gui:
 		down = ttk.Frame(self.canvas)
 		down.pack(side=ttk.BOTTOM)
 		
-		ttk.Label(up, text='Introduzca su código para que su salida quede registrada').pack()
+		ttk.Label(up, text=t).pack()
 		ttk.Label(down, text='Código: ').grid(row=0, column=0)
-		ttk.Entry(down, bd = 5).grid(row=0, column=1)
-		ttk.Button(down, text='Fichar', command = self.entrada).grid(row=1, column=0)
+		entry = ttk.Entry(down, bd = 5)
+		entry.grid(row=0, column=1)
+		ttk.Button(down, text='Fichar salida', command = lambda: self.processExit(entry.get())).grid(row=1, column=0)
 		ttk.Button(down, text='Volver', command = self.inicio).grid(row=1, column=1)
-		
+	
+	def processExit(self, code):
+		"""
+		Takes the code introduced by the user, checks that it is valid and registers the entry
+		"""
+		if self.backend.check(code):
+			if self.backend.exit(code):
+				self.salida('Su salida ha quedado registrada, gracias por su tiempo.')
+			else:
+				self.salida('El código introducido ya ha fichado su salida por hoy.')
+		else:
+			self.salida('El código introducido no existe. Por favor, introdúzca un código válido.')
