@@ -3,10 +3,11 @@
 #author: David Quesada López
 
 """
-First, we'll build the interface. Then, the backend. 
+First, we'll build the
+interface. Then, the backend.
 Lastly, we'll see how to put all the info down in a not yet decided file format.
 
-Compiled into an executable with: pyinstaller --onefile --noconsole main.py
+Install first. Then compile into an executable with: pyinstaller --onefile --noconsole main.py
 """
 
 from gui import gui

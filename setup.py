@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='EntryTimeKeeper',
-    version='1.0.0',
+    version='1.0.1',
     packages=['db', 'gui', 'out'],
     url='https://github.com/dkesada/EntryTimeKeeper',
     license='MIT',
