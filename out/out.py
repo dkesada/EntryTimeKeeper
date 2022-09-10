@@ -29,6 +29,12 @@ class Backend:
             self.base = pickle.load(f, encoding='latin1')
         self.date = datetime.datetime.today()  # .day , .month , .year
 
+        # Get the admin's id
+        for i in self.base.items():
+            if len(i[1]) == 3:
+                self.admin = i[0]
+                break
+
         # Check if the file for today exists
         if not os.path.isfile(file_name):
             self.createFile()
@@ -123,3 +129,9 @@ class Backend:
     def dumpDB(self):
         with open(data_name, 'wb') as f:
             pickle.dump(self.base, f)
+
+    def checkAdmin(self, code):
+        res = False
+        if code == self.admin:
+            res = True
+        return res

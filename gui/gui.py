@@ -34,7 +34,7 @@ class Gui:
         ttk.Button(self.canvas, text='Fichar salida',
                    command=lambda: self.salida('Introduzca su código para que su salida quede registrada')).pack()
         ttk.Button(self.canvas, text='Gestionar usuarios',
-                   command=lambda: self.gestion('Elija añadir o eliminar usuarios.')).pack()
+                   command=lambda: self.login('Introduzca el código del administrador')).pack()
         ttk.Button(self.canvas, text='Salir', command=self.home.destroy).pack()
 
     def entrada(self, t):
@@ -60,7 +60,6 @@ class Gui:
         Takes the code introduced by the user, checks that it is valid and registers the entry
         """
         if self.backend.check(code):
-            print(code)
             if self.backend.entry(code):
                 self.entrada('Su entrada ha quedado registrada, gracias por su tiempo.')
             else:
@@ -98,7 +97,7 @@ class Gui:
         else:
             self.salida('El código introducido no existe. Por favor, introdúzca un código válido.')
 
-    def gestion(self, t):
+    def gestion(self, t='Elija añadir o eliminar usuarios.'):
         self.canvas.pack_forget()
         self.canvas.destroy()
         self.canvas = ttk.Frame(self.home)
@@ -129,10 +128,10 @@ class Gui:
 
         ttk.Label(up, text=t).pack()
         ttk.Label(down, text='Nombre completo: ').grid(row=0, column=0)
-        entry = ttk.Entry(down, bd=50)
+        entry = ttk.Entry(down, bd=5)
         entry.grid(row=0, column=1)
         ttk.Button(down, text='Añadir', command=lambda: self.processAdd(entry.get())).grid(row=1, column=0)
-        ttk.Button(down, text='Volver', command=self.inicio).grid(row=1, column=1)
+        ttk.Button(down, text='Volver', command=self.gestion).grid(row=1, column=1)
 
     def processAdd(self, name):
         """
@@ -159,7 +158,7 @@ class Gui:
         entry = ttk.Entry(down, bd=5)
         entry.grid(row=0, column=1)
         ttk.Button(down, text='Eliminar', command=lambda: self.processDel(entry.get())).grid(row=1, column=0)
-        ttk.Button(down, text='Volver', command=self.inicio).grid(row=1, column=1)
+        ttk.Button(down, text='Volver', command=self.gestion).grid(row=1, column=1)
 
     def processDel(self, code):
         """
@@ -172,3 +171,30 @@ class Gui:
             self.delUser('Usuario eliminado correctamente.')
         else:
             self.delUser('El código introducido no existe. Por favor, introdúzca un código válido.')
+
+    def login(self, t):
+        self.canvas.pack_forget()
+        self.canvas.destroy()
+        self.canvas = ttk.Frame(self.home)
+        self.canvas.pack()
+
+        up = ttk.Frame(self.canvas)
+        up.pack(side=ttk.TOP)
+        down = ttk.Frame(self.canvas)
+        down.pack(side=ttk.BOTTOM)
+
+        ttk.Label(up, text=t).pack()
+        ttk.Label(down, text='Código: ').grid(row=0, column=0)
+        entry = ttk.Entry(down, bd=5)
+        entry.grid(row=0, column=1)
+        ttk.Button(down, text='Login', command=lambda: self.processLogin(entry.get())).grid(row=1, column=0)
+        ttk.Button(down, text='Volver', command=self.inicio).grid(row=1, column=1)
+
+    def processLogin(self, code):
+        """
+        Takes the code introduced by the user, checks that it is the same code as the admin's
+        """
+        if self.backend.checkAdmin(code):
+            self.gestion()
+        else:
+            self.login('Código no válido. Introduzca el código del administrador')
