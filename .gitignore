@@ -1,0 +1,9 @@
+informes/*.xlsx
+out/__pychache__/
+gui/__pychache__/
+dist/
+.idea/
+build/
+EntryTimeKeeper.egg-info/
+*.spec
+*.pyc
