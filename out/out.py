@@ -109,7 +109,10 @@ class Backend:
         for i in self.base.keys():  # Lower the position of the rest of the users above it
             if self.base[i][1] > usr[1]:
                 usr_i = self.base[i]
-                usr_i = (usr_i[0], usr_i[1] - 1)
+                if len(usr_i) == 3:
+                    usr_i = (usr_i[0], usr_i[1] - 1, usr_i[2])
+                else:
+                    usr_i = (usr_i[0], usr_i[1] - 1)
                 self.base[i] = usr_i
 
         self.dumpDB()
